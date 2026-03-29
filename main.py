@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, logging
 from flask_cors import CORS
 import boto3
 from botocore.exceptions import ClientError
@@ -9,8 +9,8 @@ DYNAMO_DB_TABLE = "faceprints"
 COLLECTION_ID = "facial-recognition-app"
 
 s3_resource = boto3.resource("s3")
-rekognition = boto3.client("rekognition",region_name='eu-west-2' )
-dynamodb = boto3.client("dynamodb",region_name='eu-west-2' )
+rekognition = boto3.client("rekognition", region_name='eu-west-2' )
+dynamodb = boto3.client("dynamodb", region_name='eu-west-2' )
 
 app = Flask(__name__)
 CORS(app, origins='*')
@@ -87,8 +87,7 @@ def upload_for_recognition():
 
         if len(face_matches) == 0:
             face_matches = None
-
-        return jsonify({"face_matches": face_matches}), 201
+        return jsonify({"face_matches": face_matches}), 200
 
 
 if __name__ == '__main__':
